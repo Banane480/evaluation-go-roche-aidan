@@ -81,7 +81,7 @@ func obtenirPrix(choix int) int {
 	default:
 		return 0
 	}
-} // switch, similaire à if... else if...
+} // switch, similaire à if... else if... + associe le prix aux boissons
 
 func afficherBoisson(choix int) {
 	switch choix {
