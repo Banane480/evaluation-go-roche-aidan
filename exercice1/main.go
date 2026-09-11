@@ -2,19 +2,20 @@ package main
 
 import "fmt"
 
-const (
+const ( //codes couleurs golang
 	Reset = "\033[0m"
 	Gras  = "\033[1m"
 	Cyan  = "\033[36m"
 	Rouge = "\033[31m"
 	Vert  = "\033[32m"
-) //codes couleurs golang
+)
 
 func main() {
 	for {
 		afficherMenu()
 
 		var choix int
+		fmt.Println()
 		fmt.Print("Votre choix : ")
 		fmt.Scan(&choix) //récupère le choix
 
@@ -22,13 +23,14 @@ func main() {
 			fmt.Println("Aurevoir !")
 			break
 		} // Option quitter du menu
+
 		if choix < 1 || choix > 4 {
 			fmt.Println(Rouge + "Choix invalide" + Reset)
 			fmt.Println()
 			continue
-		} // Check si le choix est correct (compris entre 0 et 4)
-		fmt.Println() //saut de ligne pour la lisibilité
+		} // Vérifie si le choix est valide (compris entre 1 et 4)
 
+		fmt.Println()          // Saut de ligne pour la lisibilité
 		afficherBoisson(choix) // Affiche la boisson choisie
 
 		prix := obtenirPrix(choix) // Récupère le prix de la boisson
@@ -37,7 +39,7 @@ func main() {
 		fmt.Println(Vert + "-----------------------" + Reset)
 
 		var montant int
-		fmt.Println()
+		fmt.Println() //saut de ligne après les ---
 		fmt.Print("Montant donné :")
 		fmt.Scan(&montant)
 
@@ -46,13 +48,12 @@ func main() {
 			fmt.Printf(Rouge+Gras+"Il manque %d €\n"+Reset, manque)
 			fmt.Println()
 			continue
-		} // Check si le montant est suffisant
+		} // Vérifie si le montant est suffisant
 
 		rendu := montant - prix // Calcul du rendu
 		fmt.Println()
 		fmt.Println(Vert + "Merci pour votre achat !" + Reset)
 		fmt.Printf("Votre monnaie : %d €\n", rendu)
-		fmt.Println()
 	}
 }
 
@@ -65,7 +66,7 @@ func afficherMenu() {
 	fmt.Println("4 - Chocolat  : 3 €")
 	fmt.Println("0 - Quitter")
 	fmt.Println(Vert + "-----------------------" + Reset)
-} //Afficher le menu
+} // Affiche le menu
 
 func obtenirPrix(choix int) int {
 	switch choix {
@@ -80,7 +81,7 @@ func obtenirPrix(choix int) int {
 	default:
 		return 0
 	}
-} //swich , similiraire a if... else if...
+} // switch, similaire à if... else if...
 
 func afficherBoisson(choix int) {
 	switch choix {
@@ -95,4 +96,4 @@ func afficherBoisson(choix int) {
 	default:
 		fmt.Println(Rouge + "Choix invalide" + Reset)
 	}
-} //encore une fois, un switch
+} // Affiche le nom de la boisson selon le choix

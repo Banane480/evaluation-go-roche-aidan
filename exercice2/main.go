@@ -2,13 +2,13 @@ package main
 
 import "fmt"
 
-const (
+const ( // Codes couleur ANSI pour le terminal
 	Reset = "\033[0m"
 	Gras  = "\033[1m"
 	Cyan  = "\033[36m"
 	Rouge = "\033[31m"
 	Vert  = "\033[32m"
-) //codes couleur golang (j'ai rajouté en plus)
+)
 
 func main() {
 	fmt.Println(Cyan + Gras + "=== GESTIONNAIRE DE NOTES ===" + Reset)
@@ -18,33 +18,35 @@ func main() {
 	fmt.Print("Combien de notes voulez-vous saisir ? ")
 	fmt.Scan(&nb)
 
-	if nb <= 0 {
+	if nb <= 0 { // Arrêt du programme en cas de saisie invalide
 		fmt.Println(Rouge + Gras + "Nombre de notes invalide." + Reset)
-		return //arrêt du programme.
+		return
 	}
 
-	var notes []int // J'ai utilisé une liste d'int, je trouve ca assez pratique + l'instruction append est facile.
-	somme := 0      // somme des notes pour la moyenne par la suite.
+	var notes []int // Liste (slice) d'entiers pour stocker les notes
+	somme := 0
 
-	for i := 1; i <= nb; i++ { // Cette boucle permet de récupérer le nombre de notes qu'on veut, elle va de 1 jusqu'a nb.
+	for i := 1; i <= nb; i++ { // Boucle pour saisir chaque note, de 1 jusqu'à nb
 		var note int
-		for {
-			fmt.Printf("Note %d : ", i) //affiche : note1=... note2=... etc...
+		for { // Boucle de vérification qui s'assure que la note est entre 0 et 20
+			fmt.Printf("Note %d : ", i)
 			fmt.Scan(&note)
 
 			if note >= 0 && note <= 20 {
-				break //relance la boucle avec le même i si la note est pas entre 0 ou 20
+				break // Note valide : on sort de la boucle de vérification
 			}
 			fmt.Println(Rouge + "Note invalide ! Une note doit être comprise entre 0 et 20." + Reset)
-		} // Boucle infinie qui vérifie que la note est entre 0 et 20, sinon il la redemande.
-		notes = append(notes, note) // On ajoute la note a la liste.
-		somme += note               // On ajoute la note a la somme.
+
+		}
+		notes = append(notes, note) // On ajoute la note à la liste
+		somme += note               // On ajoute la note à la somme
 	}
 
 	moyenne := calculerMoyenne(somme, nb)
 	max := trouverMaximum(notes)
 	min := trouverMinimum(notes)
 
+	//Résulats
 	fmt.Println()
 	fmt.Println(Cyan + Gras + "=== RÉSULTATS ===" + Reset)
 	fmt.Println()
@@ -61,13 +63,13 @@ func main() {
 }
 
 func calculerMoyenne(somme int, nombre int) float64 {
-	return float64(somme) / float64(nombre) //division en float54 pour éviter les overflow + comaptibilité avec les décimaux
+	return float64(somme) / float64(nombre) // Division en float64 pour obtenir un résultat décimal précis
 }
 
 func trouverMaximum(notes []int) int {
-	max := notes[0] // on prend la première valeur comme maximum par défaut.
+	max := notes[0] // On prend la première valeur comme maximum initial
 	for _, note := range notes {
-		if note > max { //si la prochaine est plus grande que la défaut alors on la remplace.
+		if note > max { // Si la note est plus grande, on met à jour le maximum
 			max = note
 		}
 	}
@@ -75,27 +77,27 @@ func trouverMaximum(notes []int) int {
 }
 
 func trouverMinimum(notes []int) int {
-	min := notes[0] // on prend la première valeur comme minimum par défaut.
+	min := notes[0] // On prend la première valeur comme minimum initial
 	for _, note := range notes {
-		if note < min { //si la prochaine est plus petite que la défaut alors on la remplace.
+		if note < min { // Si la note est plus petite, on met à jour le minimum
 			min = note
 		}
 	}
 	return min
 }
 
-func afficherResultat(moyenne float64) {
+func afficherResultat(moyenne float64) { // Affichage du résultat selon la moyenne
 	if moyenne >= 10 {
 		fmt.Println(Vert + Gras + "Étudiant admis !" + Reset)
 	} else {
 		fmt.Println(Rouge + Gras + "Non admis" + Reset)
 	}
-} // simple comparaison.
+}
 
 // BONUS
 func compterNotesAuDessusDeLaMoyenne(notes []int, moyenne float64) int {
 	compteur := 0
-	for _, note := range notes { //notes = notre liste de notes
+	for _, note := range notes {
 		if float64(note) >= moyenne { // On compare chaque note à la moyenne
 			compteur++
 		}
@@ -103,7 +105,7 @@ func compterNotesAuDessusDeLaMoyenne(notes []int, moyenne float64) int {
 	return compteur
 }
 
-func afficherAppreciation(moyenne float64) {
+func afficherAppreciation(moyenne float64) { // Affichage de l'appréciation selon la moyenne
 	if moyenne < 10 {
 		fmt.Println(Rouge + "Appréciation : Insuffisant" + Reset)
 	} else if moyenne < 12 {
@@ -115,4 +117,4 @@ func afficherAppreciation(moyenne float64) {
 	} else {
 		fmt.Println(Vert + Gras + "Appréciation : Très bien" + Reset)
 	}
-} //les commentaire dépendants de la moyenne + codes couleurs
+}
